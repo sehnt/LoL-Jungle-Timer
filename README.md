@@ -14,11 +14,12 @@ The Ingame Timer page is meant to cover up the actual League of Legends timer wi
  - The application will shrink and automatically move to the correct position for a 1080p monitor on 100% scaling.
 
 High Contrast Examples:
+
 ![image](https://user-images.githubusercontent.com/78941433/156722740-270d98ef-297e-4976-a267-92eb24768c83.png)
 ![image](https://user-images.githubusercontent.com/78941433/156722752-ce31a659-cefa-47c7-9c0c-2267e3e231d6.png)
 
 
-The Main Timer wubdiw displays the timer and has a button to move to the Hotkey page:
+The Main Timer page displays the timer and has a button to move to the Hotkey page:
 ![image](https://user-images.githubusercontent.com/78941433/156722155-a13a47b6-d0f7-4546-a8b5-64bd2dd96b31.png)
 
 The Hotkey page allows you set three hotkeys:
