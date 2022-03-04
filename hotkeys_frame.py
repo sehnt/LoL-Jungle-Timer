@@ -22,12 +22,8 @@ class HotkeysFrame(tk.Frame):
             bg = self.controller.button_bg,
             fg = self.controller.button_fg,
             command=lambda:self.controller.switch(self.controller.TIMER_FRAME), 
-            font = ("RopaSans-Regular", int(min(15.0/200*self.height, 13/200*self.width))),
             relief = "flat")
 
-        self.view_clock_butt.place(x = 45/200*self.width, y = 90/125*self.height, width = 110/200*self.width, height = 22/125*self.height)
-
-        hotkey_font_size = int(min(12.0/125*self.height, 8/200*self.width))
 
         for hotkey_button in range(len(self.hotkey_buttons)):
             self.hotkey_buttons[hotkey_button] = tk.Button(self,
@@ -37,38 +33,21 @@ class HotkeysFrame(tk.Frame):
                 activebackground= self.controller.button_fg,
                 activeforeground= self.controller.button_bg,
                 borderwidth = 1,
-                font = ("RopaSans-Regular", int(min(15.0/200*self.height, 13/200*self.width))),
                 command = (lambda num=hotkey_button:self.controller.toggle_hotkey(self.hotkey_buttons[num])),
                 relief = "raised")
 
             self.hotkey_text[hotkey_button] = ttk.Label(self,
-                text = "",
                 foreground= "#ffffff",
-                background= "#474747",
-                font = ("RopaSans-Regular", hotkey_font_size))
+                background= "#474747")
 
-        self.hotkey_buttons[0].place(
-            x = 116/200*self.width, y = 12/125*self.height,
-            width = 80/200*self.width,
-            height = 15/125*self.height)
 
-        self.hotkey_buttons[1].place(
-            x = 116/200*self.width, y = 37/125*self.height,
-            width = 80/200*self.width,
-            height = 15/125*self.height)
-
-        self.hotkey_buttons[2].place(
-            x = 116/200*self.width, y = 63/125*self.height,
-            width = 80/200*self.width,
-            height = 15/125*self.height)
 
         self.hotkey_text[timer.Timer.PAUSE].configure(text = "Pause / Unpause") 
         self.hotkey_text[timer.Timer.RESET].configure(text = "Reset Practice Tool")
         self.hotkey_text[timer.Timer.SKIP].configure(text = "Skip 30 Seconds")
 
-        for idx, hotkey in enumerate(self.hotkey_text):
-            hotkey.place(
-                x=35/200*self.width - 3*hotkey_font_size, y=(19.5/125 + 25/125*idx)*self.height - 0.7*hotkey_font_size)
+        # Sets the size and location of all widgets for the first time
+        self.resize()
 
     # Returns all elements that must be bound to allow
     # the application to be moved by dragging
