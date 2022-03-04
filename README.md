@@ -1,7 +1,7 @@
 # LoL-Jungle-Timer
 Custom Python Application for a more convenient way of timing jungle clears
 
-https://gyazo.com/2f251da0d9d5fd371a774dc9895f2477
+[![Image from Gyazo](https://i.gyazo.com/2f251da0d9d5fd371a774dc9895f2477.gif)](https://gyazo.com/2f251da0d9d5fd371a774dc9895f2477)
 
 Currently contains 3 pages:
  - Main Timer
