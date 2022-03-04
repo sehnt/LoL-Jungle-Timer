@@ -14,27 +14,23 @@ class HotkeysFrame(tk.Frame):
         self.hotkey_buttons = [None] * timer.Timer.NUM_HOTKEYS
         self.hotkey_text = [None] * timer.Timer.NUM_HOTKEYS
 
-        self.configure(width = self.width, height = self.height)
+        self.configure(width = self.width, height = self.height, background="#474747")
         self.place(x=0,y=0)
 
-        self.hotkey_canvas = tk.Canvas(self, bg = "#474747", height = self.height, width = self.width, highlightthickness = 0)
-        self.hotkey_canvas.place(x = 0, y = 0)
 
-        self.hotkey_canvas.columnconfigure(0,weight=1)
-
-        self.b0 = tk.Button(self.hotkey_canvas,text = "View Clock", 
+        self.view_clock_butt = tk.Button(self,text = "View Clock", 
             bg = self.controller.button_bg,
             fg = self.controller.button_fg,
             command=lambda:self.controller.switch(self.controller.TIMER_FRAME), 
             font = ("RopaSans-Regular", int(min(15.0/200*self.height, 13/200*self.width))),
             relief = "flat")
 
-        self.b0.place(x = 45/200*self.width, y = 90/125*self.height, width = 110/200*self.width, height = 22/125*self.height)
+        self.view_clock_butt.place(x = 45/200*self.width, y = 90/125*self.height, width = 110/200*self.width, height = 22/125*self.height)
 
         hotkey_font_size = int(min(12.0/125*self.height, 8/200*self.width))
 
         for hotkey_button in range(len(self.hotkey_buttons)):
-            self.hotkey_buttons[hotkey_button] = tk.Button(self.hotkey_canvas,
+            self.hotkey_buttons[hotkey_button] = tk.Button(self,
                 text = "None",
                 fg = self.controller.button_fg,
                 bg = self.controller.button_bg,
@@ -74,9 +70,10 @@ class HotkeysFrame(tk.Frame):
             hotkey.place(
                 x=35/200*self.width - 3*hotkey_font_size, y=(19.5/125 + 25/125*idx)*self.height - 0.7*hotkey_font_size)
 
+    # Returns all elements that must be bound to allow
+    # the application to be moved by dragging
     def get_draggables(self):
-        ret = []
-        ret.append(self.hotkey_canvas)
+        ret = [self]
 
         for hotkey in self.hotkey_text:
             ret.append(hotkey)
@@ -90,12 +87,9 @@ class HotkeysFrame(tk.Frame):
         self.configure(width = self.width, height = self.height)
         self.place(x=0,y=0)
 
-        self.hotkey_canvas.configure(width = self.width, height = self.height)
-        self.hotkey_canvas.place(x = 0, y = 0)
+        self.view_clock_butt.configure(font = ("RopaSans-Regular", int(min(15.0/200*self.height, 13/200*self.width))))
 
-        self.b0.configure(font = ("RopaSans-Regular", int(min(15.0/200*self.height, 13/200*self.width))))
-
-        self.b0.place(x = 45/200*self.width, y = 90/125*self.height, 
+        self.view_clock_butt.place(x = 45/200*self.width, y = 90/125*self.height, 
             width = 110/200*self.width, height = 22/125*self.height)
 
         hotkey_font_size = int(min(12.0/125*self.height, 8/200*self.width))

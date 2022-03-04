@@ -9,14 +9,8 @@ class TimerFrame(tk.Frame):
         self.height = self.parent.winfo_height()
         self.width = self.parent.winfo_width()
 
-        self.configure(height = self.height, width = self.width)
+        self.configure(height = self.height, width = self.width, background = "#474747")
         self.place(x=0,y=0)
-        
-        self.clock_canvas = tk.Canvas(self, bg = "#474747", height = self.height, width = self.width, highlightthickness = 0)
-
-        
-        
-        self.clock_canvas.place(x = 0, y = 0)
 
         clock_font_size = int(min(70.0/200*self.height, 33/200*self.width))
 
@@ -28,7 +22,7 @@ class TimerFrame(tk.Frame):
             x=100/200*self.width - 2.60*clock_font_size, y=1/3*self.height - 0.7*clock_font_size)
 
         self.switch_view_button = tk.Button(
-            self.clock_canvas,
+            self,
             bg = self.controller.button_bg,
             text = "Set Hotkeys",
             font = ("RopaSans-Regular", int(min(15.0/200*self.height, 13/200*self.width))),
@@ -45,16 +39,13 @@ class TimerFrame(tk.Frame):
         self.clock_label.configure(text = new_time)
 
     def get_draggables(self):
-        return [self.clock_canvas, self.clock_label]
+        return [self, self.clock_label]
 
     def resize(self):
         self.width = self.parent.winfo_width()
         self.height = self.parent.winfo_height()
         self.configure(width = self.width, height = self.height)
         self.place(x=0,y=0)
-
-        self.clock_canvas.configure(width = self.width, height = self.height)
-        self.clock_canvas.place(x = 0, y = 0)
 
 
         clock_font_size = int(min(70.0/200*self.height, 33/200*self.width))

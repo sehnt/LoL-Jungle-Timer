@@ -35,28 +35,31 @@ class LeagueFrame(tk.Frame):
 
         self.configure(height = self.height, width = self.width)
         self.place(x=0, y=0)
-        
-        self.canvas = tk.Canvas(self, height = self.height, width = self.width,highlightthickness=0, borderwidth = 0, background="red")
-        self.canvas.place(x=0,y=0)
 
-        # self.get_clock_window()
-
+        self.image_label = tk.Label(self, borderwidth=0)
 
         # The image for the ingame timer is updated
         # in set_time()
-        self.img = self.get_image()
+        self.background = self.get_image()
 
-
+    # Returns all elements that must be bound to allow
+    # the application to be moved by dragging
     def get_draggables(self):
-        return [self.canvas]
+        return [self.image_label]
 
     def set_time(self, new_time):
         # Time is in 00:00.00 format
         # This turns it into 00:00
         new_time = new_time[0:5]
-        if new_time != self.old_time:
-            temp = self.img
 
+        # Only updates ingame clock if the time changes
+        # Improves performance
+        if new_time != self.old_time:
+
+            # Creates copy of the background image for editing
+            temp = self.background
+
+            # Overlays time onto background image one char at a time
             x = 0
             for char in new_time:
                 if char != ':':
@@ -66,18 +69,27 @@ class LeagueFrame(tk.Frame):
                 else:
                     temp.paste(self.char_images[10], (x,0), self.char_images[10])
                     x += 4
+
+            # Converts image to be usable by tkinter
             self.temp = ImageTk.PhotoImage(temp)
-            self.canvas.delete('all')
-            self.canvas.create_image(0,0,image=self.temp, anchor="nw")
+
+
+            # Updates the image displayed on the label to be the new time
+            self.image_label.configure(image = self.temp)
+            self.image_label.grid(row=0,column=0)
+
             self.old_time = new_time
 
 
-
+    # Updates the background image every 100ms
     def update_image(self):
-        self.img = self.get_image()
+        self.background = self.get_image()
 
         self.after(100, self.update_image)
 
+
+    # Takes a screenshot of the pixels surrounding the ingame clock
+    # Uses this info to generate a background image that matches
     def get_image(self):
         with mss.mss() as sct:
             img = np.array(sct.grab(self.monitor))
