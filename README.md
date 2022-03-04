@@ -1,6 +1,6 @@
 # LoL-Jungle-Timer
 Custom Python Application for a more convenient way of timing jungle clears.
-Has only been tested on Windows so far
+Does not work in fullscreen, has only been tested on Windows
 
 [![Image from Gyazo](https://i.gyazo.com/2f251da0d9d5fd371a774dc9895f2477.gif)](https://gyazo.com/2f251da0d9d5fd371a774dc9895f2477)
 
@@ -36,7 +36,14 @@ The Hotkey page allows you set three hotkeys:
 2. Open up the Windows Terminal
 3. Type: pip install pyinstaller
 4. Navigate to this project's folder
-5. Run: pyinstaller main.py --noconsole --exclude-module _bootlocale
+5. Run the following
+ - pip install pillow
+ - pip install mss
+ - pip install opencv-python
+ - pip install numpy
+ - pip install keyboard
+ - pyinstaller main.py --noconsole --exclude-module _bootlocale
+
 6. Copy the imgs folder from the project's folder
 7. Navigate to dist/main
 8. Paste the imgs folder
