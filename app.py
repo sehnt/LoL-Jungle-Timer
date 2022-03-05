@@ -15,8 +15,8 @@ class App(threading.Thread):
     LEAGUE_CLOCK_FRAME = 2
     FRAME_COUNT = 3
 
-    RESIZE_FREQ = 1
-    CLOCK_FREQ = 10
+    RESIZE_FREQ = 20
+    CLOCK_FREQ = 20
 
     IMAGE_PATH = "imgs/"
 
