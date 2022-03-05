@@ -21,7 +21,7 @@ class App(threading.Thread):
     IMAGE_PATH = "imgs/"
 
     def __init__(self):
-        self.hotkey_binds = ["None" for x in range(3)]
+        self.hotkey_binds = ["None", "ctrl+shift+p", "ctrl+shift+o"]
         self.active_button = None # the current hotkey being changed
         self.active_recording = set()
 

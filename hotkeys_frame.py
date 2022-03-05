@@ -44,7 +44,9 @@ class HotkeysFrame(tk.Frame):
 
         self.hotkey_text[timer.Timer.PAUSE].configure(text = "Pause / Unpause") 
         self.hotkey_text[timer.Timer.RESET].configure(text = "Reset Practice Tool")
+        self.hotkey_buttons[timer.Timer.RESET].configure(text = "ctrl+shift+p")
         self.hotkey_text[timer.Timer.SKIP].configure(text = "Skip 30 Seconds")
+        self.hotkey_buttons[timer.Timer.SKIP].configure(text = "ctrl+shift+o")
 
         # Sets the size and location of all widgets for the first time
         self.resize()

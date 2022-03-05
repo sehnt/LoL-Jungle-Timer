@@ -10,11 +10,13 @@ class Timer(threading.Thread):
     SKIP  = 2
     HOTKEYS_FILE = "hotkeys.txt"
 
+    DEFAULT_HOTKEYS = ["None", "ctrl+shift+p", "ctrl+shift+o"]
+
     def __init__(self):
         self.is_paused = False
         self.timer = 0
         self.last = time.perf_counter()
-        self.hotkeys = ["None"] * self.NUM_HOTKEYS
+        self.hotkeys = self.DEFAULT_HOTKEYS
 
         self.load_hotkeys()
 
@@ -46,7 +48,7 @@ class Timer(threading.Thread):
         self.hotkeys = hotkeys
 
     def load_hotkeys(self):
-        hotkeys = ["None"] * 3
+        hotkeys = self.DEFAULT_HOTKEYS
         try:
             with open(self.HOTKEYS_FILE, 'r') as file:
                 for idx, line in enumerate(file.readlines()):
