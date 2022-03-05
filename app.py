@@ -18,6 +18,9 @@ class App(threading.Thread):
     RESIZE_FREQ = 20
     CLOCK_FREQ = 20
 
+    MIN_WIDTH = 70
+    MIN_HEIGHT = 50
+
     IMAGE_PATH = "imgs/"
 
     def __init__(self):
@@ -103,13 +106,11 @@ class App(threading.Thread):
             self.active_button = button
             button.configure(bg = "white", fg = "black")
 
-
     def reset_button(self, button):
         if button != None:
             button.configure(bg = self.button_bg, fg = self.button_fg)
             self.active_button = None
             self.active_recording = set()
-
 
     def update_clock(self):
         current = self.timer.get_time()
@@ -126,41 +127,40 @@ class App(threading.Thread):
         self.root.geometry('+{0}+{1}'.format(self.root.winfo_x() + event.x_root - self.mouse_x, self.root.winfo_y() + event.y_root - self.mouse_y))
         self.mouse_x, self.mouse_y = event.x_root, event.y_root
 
-
     # bound to <Button-1>
     def track_mouse(self, event):
         self.mouse_x, self.mouse_y = event.x_root, event.y_root
 
     def switch_clock(self, event):
-        if self.current_frame != self.LEAGUE_CLOCK_FRAME:
+        if self.current_frame == self.LEAGUE_CLOCK_FRAME:
             # self.root.overrideredirect(True)
-            self.switch(self.LEAGUE_CLOCK_FRAME)
-            self.root.geometry(f"{self.league_frame.width}x{self.league_frame.height}")
-            self.root.geometry(f"+{self.league_frame.left}+{self.league_frame.top}")
+            self.root.geometry(f"{self.width}x{self.height}+{self.x}+{self.y}")
+            self.root.minsize(width=self.MIN_WIDTH,height=self.MIN_HEIGHT)
+            self.switch(self.TIMER_FRAME)
+            
         else:
             # self.root.overrideredirect(False)
-            self.switch(self.TIMER_FRAME)
-            self.root.geometry(f"{self.width}x{self.height}+{self.x}+{self.y}")
+            self.root.minsize(width=0,height=0)
+            self.root.geometry(f"{self.league_frame.width}x{self.league_frame.height}")
+            self.root.geometry(f"+{self.league_frame.left}+{self.league_frame.top}")
+            self.switch(self.LEAGUE_CLOCK_FRAME)
 
 
-
-    def resize(self):
-        if self.width != self.root.winfo_width() or self.height != self.root.winfo_height():
-
-            # Only update the window size when not minimized
-            if self.current_frame != self.LEAGUE_CLOCK_FRAME:
-                self.width = self.root.winfo_width()
-                self.height = self.root.winfo_height()
-                self.x = self.root.winfo_x()
-                self.y = self.root.winfo_y()
-                
-
-                self.frames[self.current_frame].resize()
-
+    def resize(self, e):
+        # Only update the window size when not displaying the ingame clock
+        if self.current_frame != self.LEAGUE_CLOCK_FRAME:
+            self.width = max(self.MIN_WIDTH, self.root.winfo_width())
+            self.height = max(self.MIN_HEIGHT, self.root.winfo_height())
+            print(self.width, self.height)
             
-                self.size_grip.place(anchor="se",relx=1,rely=1)
-                self.size_grip.tkraise()
-        self.root.after(self.RESIZE_FREQ, self.resize)
+            self.x = self.root.winfo_x()
+            self.y = self.root.winfo_y()
+
+            self.frames[self.current_frame].resize()
+        
+            self.size_grip.place(anchor="se",relx=1,rely=1)
+            self.size_grip.tkraise()
+        # self.root.after(self.RESIZE_FREQ, self.resize)
 
 
 
@@ -181,6 +181,8 @@ class App(threading.Thread):
         self.root.title("Jungle Clear Timer")
         self.root.iconbitmap(f'{self.IMAGE_PATH}icon.ico')
         self.root.option_add("*tearOff", False)
+
+        self.root.minsize(width=self.MIN_WIDTH, height=self.MIN_HEIGHT)
 
         self.timer_frame = timer_frame.TimerFrame(self.root, self)
         self.hotkeys_frame = hotkeys_frame.HotkeysFrame(self.root, self)
@@ -212,8 +214,8 @@ class App(threading.Thread):
 
         self.initialize_keybinds(self.timer.hotkeys)
 
-        self.root.after(self.RESIZE_FREQ, self.resize)
-
+        # self.root.after(self.RESIZE_FREQ, self.resize)
+        self.root.bind('<Configure>', self.resize)
         self.root.after(100, self.league_frame.update_image)
         self.root.after(self.CLOCK_FREQ, self.update_clock)
         self.root.mainloop()
