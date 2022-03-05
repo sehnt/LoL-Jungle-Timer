@@ -1,6 +1,7 @@
 # LoL-Jungle-Timer
 Custom Python Application for a more convenient way of timing jungle clears.
-Does not work in fullscreen, has only been tested on Windows
+
+**DISCLAIMER: Only works with 1080p at 100% Scaling. Also has not been tested on MacOS**
 
 [![Image from Gyazo](https://i.gyazo.com/2f251da0d9d5fd371a774dc9895f2477.gif)](https://gyazo.com/2f251da0d9d5fd371a774dc9895f2477)
 
