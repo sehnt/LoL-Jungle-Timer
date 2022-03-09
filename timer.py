@@ -17,6 +17,7 @@ class Timer(threading.Thread):
     def __init__(self):
         self.is_paused = False
         self.timer = 0
+        self.skip_start = -30
         self.last = time.perf_counter()
         self.hotkeys = self.DEFAULT_HOTKEYS
 
@@ -27,15 +28,21 @@ class Timer(threading.Thread):
 
     def cycle_pause(self):
         self.is_paused = not self.is_paused
+        self.skip_start = -30
 
     def start_timer(self):
         self.is_paused = False
 
     def reset_timer(self):
         self.timer = 0
+        self.skip_start = -30
 
     def skip_30(self):
-        self.timer += 27.741
+        if self.is_paused:
+            self.timer += 30
+        elif self.skip_start < self.timer - 29.6:
+            self.skip_start = self.timer
+            self.timer += 27.741
 
     # bound to Right Click
     def wait_for_right(self):
