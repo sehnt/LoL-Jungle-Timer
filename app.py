@@ -152,7 +152,7 @@ class App(threading.Thread):
         if self.current_frame != self.LEAGUE_CLOCK_FRAME:
             self.width = max(self.MIN_WIDTH, self.root.winfo_width())
             self.height = max(self.MIN_HEIGHT, self.root.winfo_height())
-            print(self.width, self.height)
+            # print(self.width, self.height)
             
             self.x = self.root.winfo_x()
             self.y = self.root.winfo_y()
