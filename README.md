@@ -1,6 +1,7 @@
 # LoL-Jungle-Timer
 Custom Python Application for a more convenient way of timing jungle clears.
-Does not work in fullscreen, has only been tested on Windows
+
+**DISCLAIMER: Only works with 1080p at 100% Scaling. Also has not been tested on MacOS**
 
 [![Image from Gyazo](https://i.gyazo.com/2f251da0d9d5fd371a774dc9895f2477.gif)](https://gyazo.com/2f251da0d9d5fd371a774dc9895f2477)
 
@@ -23,12 +24,14 @@ High Contrast Examples:
 The Main Timer page displays the timer and has a button to move to the Hotkey page:
 ![image](https://user-images.githubusercontent.com/78941433/156722155-a13a47b6-d0f7-4546-a8b5-64bd2dd96b31.png)
 
-The Hotkey page allows you set three hotkeys:
+The Hotkey page allows you set four hotkeys:
  - Pause / Unpause the timer
  - Reset the timer
  - Skip 30 seconds (Actually skips ~27.7 seconds to mimic practice tool)
+ - Start on Right Click
+   - After you press this hotkey, the timer will start on your next right click
 
-![image](https://user-images.githubusercontent.com/78941433/156722640-d379d042-de83-4694-856f-c5ca92734cbb.png)
+![image](https://user-images.githubusercontent.com/78941433/157542639-a64c9214-8c59-416a-a8b3-b314405d1739.png)
 
 
 **Installation Instructions:**
@@ -42,6 +45,7 @@ The Hotkey page allows you set three hotkeys:
  - pip install opencv-python
  - pip install numpy
  - pip install keyboard
+ - pip install mouse
  - pyinstaller main.py --noconsole --exclude-module _bootlocale
 
 6. Copy the imgs folder from the project's folder
