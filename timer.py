@@ -1,16 +1,18 @@
 import keyboard
+import mouse
 import time
 import threading
 
 
 class Timer(threading.Thread):
-    NUM_HOTKEYS = 3
+    NUM_HOTKEYS = 4
     PAUSE = 0
     RESET = 1
     SKIP  = 2
+    RIGHT = 3
     HOTKEYS_FILE = "hotkeys.txt"
 
-    DEFAULT_HOTKEYS = ["None", "ctrl+shift+p", "ctrl+shift+o"]
+    DEFAULT_HOTKEYS = ["None", "ctrl+shift+p", "ctrl+shift+o", "None"]
 
     def __init__(self):
         self.is_paused = False
@@ -26,11 +28,22 @@ class Timer(threading.Thread):
     def cycle_pause(self):
         self.is_paused = not self.is_paused
 
+    def start_timer(self):
+        self.is_paused = False
+
     def reset_timer(self):
         self.timer = 0
 
     def skip_30(self):
         self.timer += 27.741
+
+    # bound to Right Click
+    def wait_for_right(self):
+        mouse.on_right_click(self.on_right)
+
+    def on_right(self):
+        mouse.unhook_all()
+        self.start_timer()
 
     def update_hotkeys(self, hotkeys):
         keyboard.unhook_all_hotkeys()
@@ -44,6 +57,8 @@ class Timer(threading.Thread):
             keyboard.add_hotkey(hotkeys[self.RESET], self.reset_timer)
         if hotkeys[self.SKIP] != "None":
             keyboard.add_hotkey(hotkeys[self.SKIP], self.skip_30)
+        if hotkeys[self.RIGHT] != "None":
+            keyboard.add_hotkey(hotkeys[self.RIGHT], self.wait_for_right)
 
         self.hotkeys = hotkeys
 

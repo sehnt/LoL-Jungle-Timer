@@ -47,6 +47,7 @@ class HotkeysFrame(tk.Frame):
         self.hotkey_buttons[timer.Timer.RESET].configure(text = "ctrl+shift+p")
         self.hotkey_text[timer.Timer.SKIP].configure(text = "Skip 30 Seconds")
         self.hotkey_buttons[timer.Timer.SKIP].configure(text = "ctrl+shift+o")
+        self.hotkey_text[timer.Timer.RIGHT].configure(text = "Start on Right Click")
 
         # Sets the size and location of all widgets for the first time
         self.resize()
@@ -82,19 +83,9 @@ class HotkeysFrame(tk.Frame):
         
         for idx, hotkey in enumerate(self.hotkey_text):
             hotkey.place(
-                x=35/200*self.width - 3*hotkey_font_size, y=(19.5/125 + 25/125*idx)*self.height - 0.7*hotkey_font_size)
-
-        self.hotkey_buttons[0].place(
-            x = 116/200*self.width, y = 12/125*self.height,
+                x=35/200    *self.width - 3*hotkey_font_size, y=(12/125 + 15/125*idx)*self.height - 0.7*hotkey_font_size)
+            
+            self.hotkey_buttons[idx].place(
+            x = 116/200*self.width, y = (6 + 15*idx)/125*self.height,
             width = 80/200*self.width,
-            height = 15/125*self.height)
-
-        self.hotkey_buttons[1].place(
-            x = 116/200*self.width, y = 37/125*self.height,
-            width = 80/200*self.width,
-            height = 15/125*self.height)
-
-        self.hotkey_buttons[2].place(
-            x = 116/200*self.width, y = 63/125*self.height,
-            width = 80/200*self.width,
-            height = 15/125*self.height)
+            height = 12/125*self.height)

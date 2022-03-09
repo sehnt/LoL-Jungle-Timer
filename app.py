@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import threading
 import keyboard
+import mouse
 import timer
 
 import timer_frame
@@ -133,13 +134,13 @@ class App(threading.Thread):
 
     def switch_clock(self, event):
         if self.current_frame == self.LEAGUE_CLOCK_FRAME:
-            # self.root.overrideredirect(True)
+            self.root.overrideredirect(False)
             self.root.geometry(f"{self.width}x{self.height}+{self.x}+{self.y}")
             self.root.minsize(width=self.MIN_WIDTH,height=self.MIN_HEIGHT)
             self.switch(self.TIMER_FRAME)
             
         else:
-            # self.root.overrideredirect(False)
+            self.root.overrideredirect(True)
             self.root.minsize(width=0,height=0)
             self.root.geometry(f"{self.league_frame.width}x{self.league_frame.height}")
             self.root.geometry(f"+{self.league_frame.left}+{self.league_frame.top}")
@@ -174,7 +175,8 @@ class App(threading.Thread):
         self.y = self.root.winfo_y()
 
         self.root.resizable(True, True)
-        self.root.overrideredirect(True)
+        # self.root.overrideredirect(True)
+        # self.root.wm_attributes('-fullscreen', 'True')
 
         self.root.attributes('-topmost',True)
 

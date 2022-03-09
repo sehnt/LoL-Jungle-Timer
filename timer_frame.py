@@ -37,7 +37,7 @@ class TimerFrame(tk.Frame):
         self.configure(width = self.width, height = self.height)
         self.place(x=0,y=0)
 
-        clock_font_size = int(min(70.0/200*self.height, 33/200*self.width))
+        clock_font_size = int(min(90.0/200*self.height, 33/200*self.width))
         self.clock_label.configure(font = ("RopaSans-Regular", clock_font_size))
         
         self.clock_label.place(
