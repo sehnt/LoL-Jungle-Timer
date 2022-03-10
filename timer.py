@@ -23,7 +23,7 @@ class Timer(threading.Thread):
 
         self.load_hotkeys()
 
-        threading.Thread.__init__(self)
+        threading.Thread.__init__(self, daemon=True)
         self.start()
 
     def cycle_pause(self):
