@@ -34,7 +34,9 @@ The Hotkey page allows you set four hotkeys:
 ![image](https://user-images.githubusercontent.com/78941433/157542639-a64c9214-8c59-416a-a8b3-b314405d1739.png)
 
 
-**Installation Instructions:**
+**Compilation Instructions:**
+If you want to compile the code for yourself, here's how to do so
+
 1. Install Python: https://www.python.org/downloads/
 2. Open up the Windows Terminal
 3. Type: pip install pyinstaller
@@ -46,9 +48,7 @@ The Hotkey page allows you set four hotkeys:
  - pip install numpy
  - pip install keyboard
  - pip install mouse
- - pyinstaller main.py --noconsole --exclude-module _bootlocale
+ - pyinstaller main.py --exclude-module \_bootlocale --add-data imgs;imgs --noconsole --icon=imgs/icon.ico --clean --name Jungle-Timer
 
-6. Copy the imgs folder from the project's folder
-7. Navigate to dist/main
-8. Paste the imgs folder
-9. Run main.exe
+6. Navigate to dist/Jungle-Timer
+7. Run Jungle-Timer.exe
