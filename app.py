@@ -56,7 +56,7 @@ class App(threading.Thread):
 
                 self.set_keybind()
 
-                self.reset_button(self.active_button)
+                self.reset_active()
 
     def initialize_keybinds(self, keybinds):
         self.hotkey_binds = keybinds
@@ -78,7 +78,7 @@ class App(threading.Thread):
         self.hotkey_binds[self.get_button_idx(self.active_button)] = new_text
 
         self.active_button.configure(text = new_text)
-        
+
         self.timer.update_hotkeys(self.hotkey_binds)
 
     def get_hotkey_binds(self):
@@ -88,38 +88,34 @@ class App(threading.Thread):
         self.root.quit()
 
     def switch(self, frame):
-        self.reset_button(self.active_button)
+        self.reset_active()
         self.frames[frame].tkraise()
         self.current_frame = frame
 
         if self.current_frame != self.LEAGUE_CLOCK_FRAME:
             self.frames[self.current_frame].resize()
-            self.size_grip.place(anchor="se",relx=1,rely=1)
-            self.size_grip.tkraise()
 
     def toggle_hotkey(self, button):
         if self.active_button == button:
             self.set_keybind()
-            self.reset_button(self.active_button)
+            self.reset_active()
         else:
-            self.reset_button(self.active_button)
+            self.reset_active()
 
             self.active_button = button
-            button.configure(bg = "white", fg = "black")
 
-    def reset_button(self, button):
-        if button != None:
-            button.configure(bg = self.button_bg, fg = self.button_fg)
+
+    def reset_active(self):
+        if self.active_button != None:
+            self.active_button.release()
             self.active_button = None
             self.active_recording = set()
 
     def update_clock(self):
         current = self.timer.get_time()
 
-        if self.current_frame == self.TIMER_FRAME:
-            self.timer_frame.set_time(current)
-        elif self.current_frame == self.LEAGUE_CLOCK_FRAME:
-            self.league_frame.set_time(current)
+        self.timer_frame.set_time(current)
+        self.league_frame.set_time(current)
             
         self.root.after(self.CLOCK_FREQ, self.update_clock)
 
@@ -152,17 +148,10 @@ class App(threading.Thread):
         if self.current_frame != self.LEAGUE_CLOCK_FRAME:
             self.width = max(self.MIN_WIDTH, self.root.winfo_width())
             self.height = max(self.MIN_HEIGHT, self.root.winfo_height())
-            # print(self.width, self.height)
-            
             self.x = self.root.winfo_x()
             self.y = self.root.winfo_y()
 
             self.frames[self.current_frame].resize()
-        
-            self.size_grip.place(anchor="se",relx=1,rely=1)
-            self.size_grip.tkraise()
-        # self.root.after(self.RESIZE_FREQ, self.resize)
-
 
 
     def run(self):
@@ -197,13 +186,6 @@ class App(threading.Thread):
 
         self.current_frame = self.TIMER_FRAME
         self.frames[self.TIMER_FRAME].tkraise()
-
-        size_grip_style = ttk.Style(self.root)
-        # size_grip_style.theme_use('vista')
-        size_grip_style.configure('TSizegrip', background="#474747")
-
-        self.size_grip = ttk.Sizegrip(self.root)
-        self.size_grip.place(anchor="se",relx=1,rely=1, )
         
 
         for frame in self.frames:
