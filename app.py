@@ -200,6 +200,6 @@ class App(threading.Thread):
 
         # self.root.after(self.RESIZE_FREQ, self.resize)
         self.root.bind('<Configure>', self.resize)
-        self.root.after(100, self.league_frame.update_image)
-        self.root.after(self.CLOCK_FREQ, self.update_clock)
+        self.league_frame.update_image()
+        self.update_clock()
         self.root.mainloop()

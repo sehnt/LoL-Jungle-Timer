@@ -85,7 +85,7 @@ class LeagueFrame(tk.Frame):
     def update_image(self):
         self.background = self.get_image()
 
-        self.after(100, self.update_image)
+        self.after(300, self.update_image)
 
 
     # Takes a screenshot of the pixels surrounding the ingame clock
