@@ -19,7 +19,7 @@ class LeagueFrame(tk.Frame):
         self.height = 14
 
         self.x_off = 5
-        self.y_off = 8
+        self.y_off = 9
 
         self.top = self.monitor["top"] + self.y_off
         self.left = self.monitor["left"] + self.x_off
