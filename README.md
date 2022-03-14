@@ -1,3 +1,6 @@
+# [**Download Here**](https://github.com/sehnt/LoL-Jungle-Timer/releases)
+
+
 # LoL-Jungle-Timer
 Custom Python Application for a more convenient way of timing jungle clears.
 
