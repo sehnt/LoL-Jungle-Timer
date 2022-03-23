@@ -45,7 +45,7 @@ class LeagueFrame(tk.Frame):
     # Returns all elements that must be bound to allow
     # the application to be moved by dragging
     def get_draggables(self):
-        return [self.image_label]
+        return None
 
     def set_time(self, new_time):
         # Time is in 00:00.00 format
@@ -81,11 +81,11 @@ class LeagueFrame(tk.Frame):
             self.old_time = new_time
 
 
-    # Updates the background image every 100ms
+    # Updates the background image every 500ms
     def update_image(self):
         self.background = self.get_image()
 
-        self.after(300, self.update_image)
+        self.after(500, self.update_image)
 
 
     # Takes a screenshot of the pixels surrounding the ingame clock

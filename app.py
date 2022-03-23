@@ -13,8 +13,8 @@ class App(threading.Thread):
 
     TIMER_FRAME = 0
     HOTKEYS_FRAME = 1
-    LEAGUE_CLOCK_FRAME = 2
-    FRAME_COUNT = 3
+
+    FRAME_COUNT = 2
 
     RESIZE_FREQ = 20
     CLOCK_FREQ = 20
@@ -89,11 +89,12 @@ class App(threading.Thread):
 
     def switch(self, frame):
         self.reset_active()
+
         self.frames[frame].tkraise()
+
         self.current_frame = frame
 
-        if self.current_frame != self.LEAGUE_CLOCK_FRAME:
-            self.frames[self.current_frame].resize()
+        self.frames[self.current_frame].resize()
 
     def toggle_hotkey(self, button):
         if self.active_button == button:
@@ -129,29 +130,20 @@ class App(threading.Thread):
         self.mouse_x, self.mouse_y = event.x_root, event.y_root
 
     def switch_clock(self, event):
-        if self.current_frame == self.LEAGUE_CLOCK_FRAME:
-            self.root.overrideredirect(False)
-            self.root.geometry(f"{self.width}x{self.height}+{self.x}+{self.y}")
-            self.root.minsize(width=self.MIN_WIDTH,height=self.MIN_HEIGHT)
-            self.switch(self.TIMER_FRAME)
-            
+        if self.league_top_level.state() == 'withdrawn':
+            self.league_top_level.deiconify()
         else:
-            self.root.overrideredirect(True)
-            self.root.minsize(width=0,height=0)
-            self.root.geometry(f"{self.league_frame.width}x{self.league_frame.height}")
-            self.root.geometry(f"+{self.league_frame.left}+{self.league_frame.top}")
-            self.switch(self.LEAGUE_CLOCK_FRAME)
+            self.league_top_level.withdraw()
+
 
 
     def resize(self, e):
-        # Only update the window size when not displaying the ingame clock
-        if self.current_frame != self.LEAGUE_CLOCK_FRAME:
-            self.width = max(self.MIN_WIDTH, self.root.winfo_width())
-            self.height = max(self.MIN_HEIGHT, self.root.winfo_height())
-            self.x = self.root.winfo_x()
-            self.y = self.root.winfo_y()
+        self.width = max(self.MIN_WIDTH, self.root.winfo_width())
+        self.height = max(self.MIN_HEIGHT, self.root.winfo_height())
+        self.x = self.root.winfo_x()
+        self.y = self.root.winfo_y()
 
-            self.frames[self.current_frame].resize()
+        self.frames[self.current_frame].resize()
 
 
     def run(self):
@@ -177,12 +169,20 @@ class App(threading.Thread):
 
         self.timer_frame = timer_frame.TimerFrame(self.root, self)
         self.hotkeys_frame = hotkeys_frame.HotkeysFrame(self.root, self)
-        self.league_frame = league_frame.LeagueFrame(self.root, self)
+
+
+        self.league_top_level = tk.Toplevel()
+        self.league_top_level.withdraw()
+        self.league_top_level.attributes('-topmost',True)
+        self.league_top_level.overrideredirect(True)
+        self.league_frame = league_frame.LeagueFrame(self.league_top_level, self)
+        self.league_top_level.geometry(f"{self.league_frame.width}x{self.league_frame.height}")
+        self.league_top_level.geometry(f"+{self.league_frame.left}+{self.league_frame.top}")
+        
         
         self.frames = [None] * self.FRAME_COUNT
         self.frames[0] = self.timer_frame
         self.frames[1] = self.hotkeys_frame
-        self.frames[2] = self.league_frame
 
         self.current_frame = self.TIMER_FRAME
         self.frames[self.TIMER_FRAME].tkraise()
@@ -198,7 +198,6 @@ class App(threading.Thread):
 
         self.initialize_keybinds(self.timer.hotkeys)
 
-        # self.root.after(self.RESIZE_FREQ, self.resize)
         self.root.bind('<Configure>', self.resize)
         self.league_frame.update_image()
         self.update_clock()
