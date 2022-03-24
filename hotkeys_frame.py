@@ -3,6 +3,7 @@ from tkinter import ttk
 
 import timer
 import hotkey_button
+import toggle_switch
 
 class HotkeysFrame(tk.Frame):
     def __init__(self, parent, controller):
@@ -14,6 +15,8 @@ class HotkeysFrame(tk.Frame):
 
         self.hotkey_buttons = [None] * timer.Timer.NUM_HOTKEYS
         self.hotkey_text = [None] * timer.Timer.NUM_HOTKEYS
+
+        self.switches = [None] * timer.Timer.NUM_SWITCHES
 
         self.configure(width = self.width, height = self.height, background="#474747")
         self.place(x=0,y=0)
@@ -33,14 +36,19 @@ class HotkeysFrame(tk.Frame):
                 foreground= "#ffffff",
                 background= "#474747")
 
-
-
         self.hotkey_text[timer.Timer.PAUSE].configure(text = "Pause / Unpause") 
         self.hotkey_text[timer.Timer.RESET].configure(text = "Reset Practice Tool")
         self.hotkey_buttons[timer.Timer.RESET].configure(text = "ctrl+shift+p")
         self.hotkey_text[timer.Timer.SKIP].configure(text = "Skip 30 Seconds")
         self.hotkey_buttons[timer.Timer.SKIP].configure(text = "ctrl+shift+o")
         self.hotkey_text[timer.Timer.RIGHT].configure(text = "Start on Right Click")
+
+        for switch in range(len(self.switches)):
+            self.switches[switch] = toggle_switch.ToggleSwitch(self, switch)
+
+        self.switches[timer.Timer.PAUSE_ON_RESET].configure(text="Pause On Reset: X")
+        self.switches[timer.Timer.SHOW_INGAME].configure(text="Popout Timer: X")
+
 
         # Sets the size and location of all widgets for the first time
         self.resize()
@@ -77,3 +85,6 @@ class HotkeysFrame(tk.Frame):
         for idx, hotkey in enumerate(self.hotkey_text):
             hotkey.place(
                 x=35/200    *self.width - 3*hotkey_font_size, y=(12/125 + 15/125*idx)*self.height - 0.7*hotkey_font_size)
+
+        for switch in range(len(self.switches)):
+            self.switches[switch].resize(self.width, self.height)

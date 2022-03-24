@@ -58,11 +58,17 @@ class App(threading.Thread):
 
                 self.reset_active()
 
-    def initialize_keybinds(self, keybinds):
-        self.hotkey_binds = keybinds
+    def initialize_keybinds(self, hotkeys, switches):
+        self.hotkey_binds = hotkeys
 
         for idx, keybind in enumerate(self.hotkey_binds):
             self.hotkeys_frame.hotkey_buttons[idx].configure(text = keybind)
+
+        for idx, switch in enumerate(switches):
+            print(switches)
+            if switch == True:
+                self.hotkeys_frame.switches[idx].press()
+        
 
     def set_keybind(self):
 
@@ -105,6 +111,12 @@ class App(threading.Thread):
 
             self.active_button = button
 
+    def toggle_switch(self, switch, is_pressed):
+        self.reset_active()
+        self.timer.toggle_switch(switch, is_pressed)
+        if (switch == self.timer.SHOW_INGAME):
+            self.switch_clock()
+
 
     def reset_active(self):
         if self.active_button != None:
@@ -129,7 +141,7 @@ class App(threading.Thread):
     def track_mouse(self, event):
         self.mouse_x, self.mouse_y = event.x_root, event.y_root
 
-    def switch_clock(self, event):
+    def switch_clock(self):
         if self.league_top_level.state() == 'withdrawn':
             self.league_top_level.deiconify()
         else:
@@ -193,10 +205,9 @@ class App(threading.Thread):
                 for widget in frame.get_draggables():
                     widget.bind('<Button-1>', self.track_mouse)
                     widget.bind('<B1-Motion>', self.move_window)
-                    widget.bind('<Double-Button-1>', self.switch_clock)
                 
 
-        self.initialize_keybinds(self.timer.hotkeys)
+        self.initialize_keybinds(self.timer.hotkeys, self.timer.switches)
 
         self.root.bind('<Configure>', self.resize)
         self.league_frame.update_image()

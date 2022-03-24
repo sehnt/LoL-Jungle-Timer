@@ -12,6 +12,10 @@ class Timer(threading.Thread):
     RIGHT = 3
     HOTKEYS_FILE = "hotkeys.txt"
 
+    PAUSE_ON_RESET = 0
+    SHOW_INGAME = 1
+    NUM_SWITCHES = 2
+
     DEFAULT_HOTKEYS = ["None", "ctrl+shift+p", "ctrl+shift+o", "None"]
 
     def __init__(self):
@@ -20,11 +24,23 @@ class Timer(threading.Thread):
         self.skip_start = -30
         self.last = time.perf_counter()
         self.hotkeys = self.DEFAULT_HOTKEYS
+        self.switches = [False]*self.NUM_SWITCHES
 
-        self.load_hotkeys()
+        self.load_settings()
 
         threading.Thread.__init__(self, daemon=True)
         self.start()
+
+    def toggle_switch(self, switch, is_pressed):
+        match switch:
+            case self.PAUSE_ON_RESET:
+                self.pause_on_reset = is_pressed
+            case self.SHOW_INGAME:
+                # Do Nothing, handled in app.py
+                pass
+        
+        self.switches[switch] = is_pressed
+        self.save_hotkeys()
 
     def cycle_pause(self):
         self.is_paused = not self.is_paused
@@ -34,8 +50,13 @@ class Timer(threading.Thread):
         self.is_paused = False
 
     def reset_timer(self):
-        self.timer = 0
-        self.skip_start = -30
+        if self.pause_on_reset:
+            self.timer = 90
+            self.skip_start = -30
+            self.is_paused = True
+        else:
+            self.timer = 0
+            self.skip_start = -30
 
     def skip_30(self):
         if self.is_paused:
@@ -55,7 +76,7 @@ class Timer(threading.Thread):
     def update_hotkeys(self, hotkeys):
         keyboard.unhook_all_hotkeys()
         self.set_hotkeys(hotkeys)
-        self.save_hotkeys(hotkeys)
+        self.save_hotkeys()
 
     def set_hotkeys(self, hotkeys):
         if hotkeys[self.PAUSE] != "None":
@@ -69,22 +90,40 @@ class Timer(threading.Thread):
 
         self.hotkeys = hotkeys
 
-    def load_hotkeys(self):
+    def load_settings(self):
         hotkeys = self.DEFAULT_HOTKEYS
+        switches = [False] * self.NUM_SWITCHES
+
         try:
             with open(self.HOTKEYS_FILE, 'r') as file:
-                for idx, line in enumerate(file.readlines()):
-                    line = line.strip()
-                    hotkeys[idx] = line
+                lines = file.readlines()
+                if len(lines) != len(hotkeys) + len(switches):
+                    pass
+                else:
+                    data = []
+                    for line in lines:
+                        data.append(line.strip())
+                    
+                    hotkeys = data[0:self.NUM_HOTKEYS]
+                    # switches = data[self.NUM_HOTKEYS:]
+                    switches = [eval(switch) for switch in data[self.NUM_HOTKEYS:]]
         except FileNotFoundError:
             pass
         
         self.set_hotkeys(hotkeys)
 
-    def save_hotkeys(self, hotkeys):
+        for switch in range(self.NUM_SWITCHES):
+            if switches[switch] == True:
+                self.toggle_switch(switch, switches[switch])
+        
+        print(self.switches)
+
+    def save_hotkeys(self):
         with open(self.HOTKEYS_FILE, 'w') as file:
-            for hotkey in hotkeys:
+            for hotkey in self.hotkeys:
                 file.write(hotkey + "\n")
+            for switch in self.switches:
+                file.write(str(switch) + "\n")
 
     def sec_to_min(self, input):
         minutes = int(input/60)
