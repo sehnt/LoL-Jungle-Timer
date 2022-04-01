@@ -56,7 +56,7 @@ class Timer(threading.Thread):
             self.timer += 30
         elif self.skip_start < self.timer - 29.6:
             self.skip_start = self.timer
-            self.timer += 27.9
+            self.timer += 28
 
     # bound to Right Click
     def wait_for_right(self):
