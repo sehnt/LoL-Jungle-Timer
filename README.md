@@ -29,7 +29,8 @@ The Main Timer page displays the timer and has a button to move to the Hotkey pa
 The Hotkey page allows you set four hotkeys:
  - Pause / Unpause the timer
  - Reset the timer
- - Skip 30 seconds (Actually skips ~27.7 seconds to mimic practice tool)
+ - Skip 30 seconds (Actually skips ~27.8 seconds to mimic practice tool)
+   - **This seems to be a bit inconsistent, the amount the actual timer changes seems to be dependent on ping**
  - Start on Right Click
    - After you press this hotkey, the timer will start on your next right click
 
