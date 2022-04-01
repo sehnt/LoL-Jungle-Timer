@@ -65,7 +65,6 @@ class App(threading.Thread):
             self.hotkeys_frame.hotkey_buttons[idx].configure(text = keybind)
 
         for idx, switch in enumerate(switches):
-            print(switches)
             if switch == True:
                 self.hotkeys_frame.switches[idx].press()
         

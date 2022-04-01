@@ -32,13 +32,6 @@ class Timer(threading.Thread):
         self.start()
 
     def toggle_switch(self, switch, is_pressed):
-        match switch:
-            case self.PAUSE_ON_RESET:
-                self.pause_on_reset = is_pressed
-            case self.SHOW_INGAME:
-                # Do Nothing, handled in app.py
-                pass
-        
         self.switches[switch] = is_pressed
         self.save_hotkeys()
 
@@ -50,7 +43,7 @@ class Timer(threading.Thread):
         self.is_paused = False
 
     def reset_timer(self):
-        if self.pause_on_reset:
+        if self.switches[self.PAUSE_ON_RESET]:
             self.timer = 90
             self.skip_start = -30
             self.is_paused = True
@@ -63,7 +56,7 @@ class Timer(threading.Thread):
             self.timer += 30
         elif self.skip_start < self.timer - 29.6:
             self.skip_start = self.timer
-            self.timer += 27.741
+            self.timer += 27.9
 
     # bound to Right Click
     def wait_for_right(self):
@@ -116,7 +109,6 @@ class Timer(threading.Thread):
             if switches[switch] == True:
                 self.toggle_switch(switch, switches[switch])
         
-        print(self.switches)
 
     def save_hotkeys(self):
         with open(self.HOTKEYS_FILE, 'w') as file:
