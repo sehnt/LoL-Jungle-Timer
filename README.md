@@ -42,25 +42,31 @@ It also has two toggle switches:
  
 ![image](https://user-images.githubusercontent.com/78941433/161172054-c57d670f-3cc4-42e7-b4b0-acf28e52202f.png)
 
+# **Virus Detection / Safety**
+I compiled my python code using pyinstaller, which results in some antivirus softwares detecting the application as a trojan:
+https://www.virustotal.com/gui/file/f25d6add1148fef9dceab01a8f84ed204d84c6d5a3a000e529c65780a4e16726?nocache=1
 
+Here's a couple stackoverflow threads discussing the issue:
+
+https://stackoverflow.com/questions/43777106/program-made-with-pyinstaller-now-seen-as-a-trojan-horse-by-avg
+https://stackoverflow.com/questions/64788656/exe-file-made-with-pyinstaller-being-reported-as-a-virus-threat-by-windows-defen
+
+If you don't trust the compiled release, you can always look through the code and compile it yourself following the below instructions
 
 # **Compilation Instructions:**
-If you want to compile the code for yourself, here's how to do so.
-If you don't what you're doing, I would strongly recommend just downloading
-a precompiled .exe from the releases page. It's much easier
 
 1. Install Python: https://www.python.org/downloads/
 2. Open up the Windows Terminal
-3. Type: pip install pyinstaller
+3. Run:
+   - pip install pyinstaller
 4. Navigate to this project's folder
-5. Run the following
- - pip install pillow
- - pip install mss
- - pip install opencv-python
- - pip install numpy
- - pip install keyboard
- - pip install mouse
- - pyinstaller main.py --exclude-module \_bootlocale --add-data "imgs;imgs" --noconsole --icon=imgs/icon.ico --clean --name Jungle-Timer
-
+5. Run:
+   - pip install pillow
+   - pip install mss
+   - pip install opencv-python
+   - pip install numpy
+   - pip install keyboard
+   - pip install mouse
+   - pyinstaller main.py --exclude-module \_bootlocale --add-data "imgs;imgs" --noconsole --icon=imgs/icon.ico --clean --name Jungle-Timer
 6. Navigate to dist/Jungle-Timer
 7. Run Jungle-Timer.exe
